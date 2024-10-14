@@ -14,6 +14,21 @@ export default {
   components: {
     'header-view': Header,
   },
+  created() {
+    this.$store.dispatch('tryLogin');
+  },
+  computed: {
+    didAutoLogout() {
+      return this.$store.getters.didAutoLogout;
+    },
+  },
+  watch: {
+    didAutoLogout(value, oldValue) {
+      if (value && value !== oldValue) {
+        this.$router.replace('/coaches');
+      }
+    },
+  },
 };
 </script>
 
@@ -32,21 +47,26 @@ body {
   margin: 0;
 }
 
-.router-enter-from {
+.route-enter-from {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(-30px);
 }
 
-.router-enter-to {
-  opacity: 1;
-  transform: translateY(0);
+.route-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
 }
 
-.router-enter-active {
-  transition: opacity 0.3s, transform 0.3s;
+.route-enter-active {
+  transition: all 0.3s ease-out;
 }
 
-.router-leave-from {
+.route-leave-active {
+  transition: all 0.3s ease-in;
+}
+
+.route-enter-to,
+.route-leave-from {
   opacity: 1;
   transform: translateY(0);
 }
